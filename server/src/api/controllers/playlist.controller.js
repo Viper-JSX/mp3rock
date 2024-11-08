@@ -1,0 +1,126 @@
+import Playlist from "../models/playlist.model.js";
+
+const getPlaylist = async (req, res) => {
+    try {  
+        const playlistId = req.params?.id;
+        const playlist = await Playlist.findById(playlistId);
+
+        if(!playlist) {
+            return res.status(404).json({ message: "Playlist not found" })
+        }
+
+        res.status(200).json({ playlist, message: "Playlist received successfully" });
+
+    } catch(err) {
+        console.log(err)
+        res.status(500).json({ error: "Internal server error when getting playlist" });
+    }
+}
+
+
+const getPlaylistSongs = async (req, res) => {
+    try {  
+        const playlistId = req.params?.id;
+        const playlist = await Playlist.findById(playlistId);
+
+        if(!playlist) {
+            return res.status(404).json({ message: "Playlist not found" })
+        }
+
+        const songs = playlist.songs;
+
+        res.status(200).json({ songs, message: "Songs received successfully" });
+
+    } catch(err) {
+        console.log(err)
+        res.status(500).json({ error: "Internal server error when getting playlist" });
+    }
+}
+
+
+const createPlaylist = async (req, res) => {
+    try {
+        console.log(req.user);
+
+        const { name } = req.body;
+        const userId = req.user._id;
+
+        if(!userId) {
+            return res.status(401).json({ error: "No user id provide" });
+        }
+
+        if(!name) {
+            return res.status(401).json({ error: "Provide playlist name" });
+        }
+
+        const existingPlaylist = await Playlist.findOne({name}); //replace with case-insensitive match and trimming
+
+        if(existingPlaylist) {
+            return res.status(401).json({ error: "Playlist with such name already exists. Please provide another name" });
+        }
+
+        const newPlaylist = await Playlist.create({ name });
+
+        res.status(200).json({ playlist: newPlaylist, message: "Playlist created successfully" })
+    } catch(err) {
+
+    }
+}
+
+
+const updatePlaylist = async (req, res) => {
+    try {
+        const playlistId = req.params.id;
+        const userId = req.user._id.toString();
+        const { name = newPlaylistName } = req.body;
+
+        const playlist = await Playlist.findById(playlistId);
+
+        if(!playlist) {
+            return res.status(404).json({ error: "Playlist not found" });
+        }
+
+
+        if(userId !== playlist.creator.toString()) {
+            return res.status(403).json({ error: "You're not a creator of this playlist" });
+        }
+
+        if(!name) {
+            return res.status(401).json({ error: "Provide playlist name" });
+        }
+
+        const updatedPlaylist = await Playlist.findByIdAndUpdate(playlistId, { name }, { returnDocument: "after" });
+
+        res.status(200).json({ playlist: updatedPlaylist, message: "Playlist updated successfully" });
+
+    } catch(err) {
+        console.log(err)
+        res.status(500).json({ error: "Server error when updating playlist" });
+    }
+}
+ 
+
+const deletePlaylist = async (req, res) => {
+    try {
+        const playlistId = req.params.id;
+        const userId = req.user._id.toString();
+
+        const playlist = await Playlist.findById(playlistId);
+
+        if(!playlist) {
+            return res.status(404).json({ error: "Playlist not found" });
+        }
+
+        if(userId !== playlist.creator.toString()) {
+            return res.status(403).json({ error: "You're not a creator of this playlist" });
+        }
+
+        const deletedPlaylist = await Playlist.deleteOne({ _id: playlist });
+
+        res.status(200).json({ playlist: deletedPlaylist, message: "Song deleted successfully" });
+    } catch(err) {
+
+    }
+}
+
+export { getPlaylist, getPlaylistSongs, createPlaylist, updatePlaylist, deletePlaylist };

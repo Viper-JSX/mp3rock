@@ -1,18 +1,22 @@
-import { Schema } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const PlaylistSchema = new Schema({
     name: {
         type: String,
+        unique: true,
         required: true
     },
 
     creator: {
-        type: Schema.ObjectId | "community",
-        default: "community"
+        type: Schema.Types.ObjectId,
+        ref: "user",
+        required: true
     },
 
     songs: {
-        type: [{ type: Schema.ObjectId, ref: "song" }]
+        type: [Schema.Types.ObjectId], 
+        ref: "song",
+        default: []
     },
 
     public: {

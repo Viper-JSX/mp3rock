@@ -1,21 +1,29 @@
 import { model, Schema } from "mongoose";
+import validateEmail from "../../lib/utilities/validateEmail.js";
 
 const UserSchema = new Schema({
     username: {
         type: String,
-        required: true
+        required: "Username is required"
     },
 
-    password: {
+    email: {
+        type: String, 
+        trim: true,
+        lowercase: true,
+        unique: true,
+        required: 'Email address is required',
+        validate: [ validateEmail, "Enter the correct email" ]
+    },
+
+    passwordHash: {
         type: String,
         required: true
     },
 
     playlists: {
-        type: [{
-            type: Schema.ObjectId,
-            ref: "playlists"
-        }]
+        type: [Schema.Types.ObjectId],
+        ref: "playlists"
     }
 }, {
     timestamps: { createdAt: true }
