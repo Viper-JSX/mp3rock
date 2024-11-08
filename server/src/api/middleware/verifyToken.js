@@ -5,8 +5,6 @@ async function verifyToken (req, res, next) {
     try {
         const token = req.cookies?.jwt;
 
-        console.log(req.cookies.jwt);
-
         if (!token) {
             return res.status(401).json({ erorr: "Unauthorized: No Token provided" });
         }
@@ -16,7 +14,7 @@ async function verifyToken (req, res, next) {
         if (!decoded) {
             return res.status(401).json({ error: "Unauthorized: Invalid Token" });
         }
-        console.log(decoded)
+
         const user = await User.findById(decoded.userId).select("-password"); //Exclude the password
     
         if (!user) {
