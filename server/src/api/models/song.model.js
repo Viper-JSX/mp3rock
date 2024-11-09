@@ -6,6 +6,12 @@ const SongSchema = new Schema({
         reqired: true
     },
 
+    creator: {
+        type: String,
+        ref: "user",
+        required: true
+    },
+
     artist: {
         type: String,
         required: true
