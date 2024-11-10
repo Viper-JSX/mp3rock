@@ -4,7 +4,7 @@ import Song from "../models/song.model.js";
 const getSong = async (req, res) => {
     try {
         const songId = req.params.id;
-        const song = await Song.findById(songId, { projection: { file: 0 } }); //note this
+        const song = await Song.findById(songId).select("-file"); //note this
 
         if(!song) {
             return res.status(404).json({ error: "Song not found" });
@@ -49,7 +49,7 @@ const getSongs = async (req, res) => { //do this up
             query.name = { $regex: search, $options: "i" }; //note
         }
 
-        const songs = await Song.find(query);
+        const songs = await Song.find(query).select("-file");
                 
         res.status(200).json({ songs, message: "Songs successfully found" });
     } catch(err) {
