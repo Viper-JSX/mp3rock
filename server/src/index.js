@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import bodyparser from "body-parser";
 import cookieParser from "cookie-parser";
+import { v2 as cloudinary } from "cloudinary";
 
 import connectToMongoDB from "./db/connectToMongoDB.js";
 import authRouter from "./api/routes/auth.router.js";
@@ -14,6 +15,12 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT;
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));

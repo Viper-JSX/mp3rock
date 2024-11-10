@@ -1,5 +1,7 @@
+import { v2 as cloudinary } from "cloudinary";
 import Janre from "../models/janre.model.js";
 import Song from "../models/song.model.js";
+import extractCloudinaryFileId from "../../lib/utilities/extractCloudinaryFileId.js";
 
 const getSong = async (req, res) => {
     try {
@@ -92,7 +94,12 @@ const createSong = async (req, res) => {
             return res.status(401).json({ error: "Provide song file" });
         }
 
-        const song = await Song.create({ name, creator: userId, artist, janre: janreId, file });
+        const uploaded = await cloudinary.uploader.upload(file, {
+            resource_type: "video"
+        });
+        const audioLink = uploaded.secure_url;
+        
+        const song = await Song.create({ name, creator: userId, artist, janre: janreId, file: audioLink });
 
         res.status(200).json({ song, message: "Song created successfully" });
     } catch(err) {
