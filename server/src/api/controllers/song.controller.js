@@ -1,3 +1,4 @@
+import Janre from "../models/janre.model.js";
 import Song from "../models/song.model.js";
 
 const getSong = async (req, res) => {
@@ -40,6 +41,7 @@ const getSongs = async (req, res) => { //do this up
         const query = {}; //note (dynamically constructed query)
 
         if(janre) {
+            //verify janre's id correctness (24 long);
             query.janre = janre; //note
         }
 
@@ -51,6 +53,7 @@ const getSongs = async (req, res) => { //do this up
                 
         res.status(200).json({ songs, message: "Songs successfully found" });
     } catch(err) {
+        console.log(err);
         return res.status(500).json({ error: "Error when getting songs" });
     }
 }
@@ -63,8 +66,7 @@ const getSongsByJanre = async (req, res) => {
 const createSong = async (req, res) => {
     try {
         const userId = req.user._id;
-        const { name, artist, janre, file } = req.body;   
-        const janres = req.janres;
+        const { name, artist, janreId, file } = req.body;   
 
         const existingSong = await Song.findOne({ name }); //make the search lowercase
 
@@ -76,15 +78,21 @@ const createSong = async (req, res) => {
             return res.status(401).json({ error: "Provide the artist" });
         }
 
+        if(!janreId) {
+            return res.status(401).json({ error: "Provide janreId for song" });
+        }
+
+        const janre = await Janre.findById(janreId);
+
         if(!janre) {
-            return res.status(401).json({ error: "Provide song janre" });
+            return res.status(404).json({ error: "Janre not found" });
         }
 
         if(!file) {
             return res.status(401).json({ error: "Provide song file" });
         }
 
-        const song = await Song.create({ name, creator: userId, artist, janre, file });
+        const song = await Song.create({ name, creator: userId, artist, janre: janreId, file });
 
         res.status(200).json({ song, message: "Song created successfully" });
     } catch(err) {

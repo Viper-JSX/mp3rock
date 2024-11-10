@@ -20,10 +20,9 @@ const SongSchema = new Schema({
     },
 
     janre: {
-        type: String,
-        enum: Object.values(janres),
+        type: Schema.Types.ObjectId,
+        ref: "janre",   
         required: true,
-        default: janres.unset
     },
 
     file: {

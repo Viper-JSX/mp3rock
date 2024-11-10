@@ -8,6 +8,7 @@ import connectToMongoDB from "./db/connectToMongoDB.js";
 import authRouter from "./api/routes/auth.router.js";
 import playlistRouter from "./api/routes/playlist.router.js";
 import songRouter from "./api/routes/song.router.js";
+import janresRouter from "./api/routes/janres.router.js";
 
 dotenv.config();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRouter);
 app.use("/api/playlists", playlistRouter);
 app.use("/api/songs", songRouter);
+app.use("/api/janres", janresRouter);
 
 
 app.listen(PORT, () => {
