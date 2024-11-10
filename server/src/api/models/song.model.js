@@ -1,5 +1,7 @@
 import { model, Schema } from "mongoose";
 
+import { janres } from "../../lib/constants/janres.js";
+
 const SongSchema = new Schema({
     name: {
         type: String,
@@ -15,6 +17,13 @@ const SongSchema = new Schema({
     artist: {
         type: String,
         required: true
+    },
+
+    janre: {
+        type: String,
+        enum: Object.values(janres),
+        required: true,
+        default: janres.unset
     },
 
     file: {
