@@ -48,17 +48,17 @@ const createPlaylist = async (req, res) => {
         const userId = req.user._id;
 
         if(!userId) {
-            return res.status(401).json({ error: "No user id provided" });
+            return res.status(400).json({ error: "No user id provided" });
         }
 
         if(!name) {
-            return res.status(401).json({ error: "Provide playlist name" });
+            return res.status(400).json({ error: "Provide playlist name" });
         }
 
         const existingPlaylist = await Playlist.findOne({name}); //replace with case-insensitive match and trimming
 
         if(existingPlaylist) {
-            return res.status(401).json({ error: "Playlist with such name already exists. Please provide another name" });
+            return res.status(409).json({ error: "Playlist with such name already exists. Please provide another name" });
         }
 
 
@@ -90,7 +90,7 @@ const updatePlaylist = async (req, res) => {
         }
 
         if(!name) {
-            return res.status(401).json({ error: "Provide playlist name" });
+            return res.status(400).json({ error: "Provide playlist name" });
         }
 
         const updatedPlaylist = await Playlist.findByIdAndUpdate(playlistId, { name }, { returnDocument: "after" });
@@ -120,7 +120,7 @@ const addSongToPlaylist = async (req, res) => {
         console.log(song, songId)
 
         if(!songId) {
-            return res.status(401).json({ error: "Song id not provided" });
+            return res.status(400).json({ error: "Song id not provided" });
         }
 
         if(!song) {
@@ -134,7 +134,7 @@ const addSongToPlaylist = async (req, res) => {
         const isAlreadyInPlaylist = playlist.songs.find((item => item.toString() === songId));
 
         if(isAlreadyInPlaylist) {
-            return res.status(401).json({ error: "Song is already in playlist" });
+            return res.status(409).json({ error: "Song is already in playlist" });
         }
 
         const updatedPlaylist = await Playlist.findByIdAndUpdate(playlistId, { $push: { songs: songId } }, { returnDocument: "after" });
@@ -172,7 +172,7 @@ const removeSongFromPlaylist = async (req, res) => {
         const isAlreadyInPlaylist = playlist.songs.find((item => item.toString() === songId));
 
         if(!isAlreadyInPlaylist) {
-            return res.status(401).json({ error: "Song is not in a playlist" });
+            return res.status(409).json({ error: "Song is not in a playlist" });
         }
 
         const updatedPlaylist = await Playlist.findByIdAndUpdate(playlistId, { $pull: { songs: songId } }, { returnDocument: "after" });

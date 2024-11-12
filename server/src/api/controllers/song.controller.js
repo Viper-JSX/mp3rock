@@ -73,15 +73,15 @@ const createSong = async (req, res) => {
         const existingSong = await Song.findOne({ name }); //make the search lowercase
 
         if(existingSong) {
-            return res.status(401).json({ error: "Song already exists, select another name" });
+            return res.status(409).json({ error: "Song already exists, select another name" });
         }
 
         if(!artist) {
-            return res.status(401).json({ error: "Provide the artist" });
+            return res.status(400).json({ error: "Provide the artist" });
         }
 
         if(!janreId) {
-            return res.status(401).json({ error: "Provide janreId for song" });
+            return res.status(400).json({ error: "Provide janreId for song" });
         }
 
         const janre = await Janre.findById(janreId);
@@ -91,7 +91,7 @@ const createSong = async (req, res) => {
         }
 
         if(!file) {
-            return res.status(401).json({ error: "Provide song file" });
+            return res.status(400).json({ error: "Provide song file" });
         }
 
         const uploaded = await cloudinary.uploader.upload(file, {

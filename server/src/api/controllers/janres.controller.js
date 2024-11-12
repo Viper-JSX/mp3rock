@@ -17,7 +17,7 @@ const createJanre = async (req, res) => {
         //check if user has permission to create janre
 
         if(!janre) {
-            return res.status(401).json({ error: "Janre not provided" });
+            return res.status(409).json({ error: "Janre not provided" });
         }   
 
         const existingJanre = await Janre.findOne({ name: janre });

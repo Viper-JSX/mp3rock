@@ -24,7 +24,10 @@ cloudinary.config({
 
 app.use(bodyparser.json());
 app.use(bodyparser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true
+}));
 app.use(cookieParser());
 
 app.use("/api/auth", authRouter);
@@ -35,7 +38,7 @@ app.use("/api/janres", janresRouter);
 
 app.listen(PORT, () => {
     connectToMongoDB()
-    .then(() => {
+    .then((conn) => {
         console.log("Connected to mongodb");
     }) .catch((err) => {
         console.log(err);
