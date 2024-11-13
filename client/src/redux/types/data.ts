@@ -3,10 +3,6 @@ export type User = {
     email: string
 };
 
-export type PlayList = {
-
-};
-
 export type AuthState = {
     user: User | null;
     isLoading: boolean;
