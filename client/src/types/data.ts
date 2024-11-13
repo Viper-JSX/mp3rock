@@ -3,6 +3,7 @@ export interface IPlayList {
 };
 
 export interface ISong {
+    _id: string;
     name: string;
 };
 

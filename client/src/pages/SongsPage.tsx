@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ISong } from "../types/data";
 import SearchForm from "../components/SearchForm";
 import axiosClient from "../axios/axiosClient";
+import SongsList from "../components/SongsList";
 
 interface IProps {
 
@@ -23,10 +24,11 @@ const SongsPage: React.FC<IProps> = () => {
     }
 
     useEffect(() => {
-        axiosClient.get("/songs")
+        //Note how to type a request
+        axiosClient.get<{ songs: ISong[], message: string }>("/songs")
         .then((res) => {
             console.log(res.data);
-            setSongs(res.data);
+            setSongs(res.data.songs);
         })
         .catch((err) => {
             console.log("Error when getting songs");
@@ -34,13 +36,14 @@ const SongsPage: React.FC<IProps> = () => {
     }, []);
 
     return(
-        <div>
+        <div className="songs-page">
             <SearchForm 
                 searchTerm={searchTerm}
                 handleChange={handleSearchTermChange}
                 handleSubmit={handleSearchSubmit}
             />
-            Songs
+            
+            <SongsList songs={songs} />
         </div>
     );
 }
