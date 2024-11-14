@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { addSongToPlaylist, createPlaylist, deletePlaylist, getPlaylist, getPlaylistSongs, removeSongFromPlaylist, updatePlaylist } from "../controllers/playlist.controller.js";
+import { addSongToPlaylist, createPlaylist, deletePlaylist, getPlaylist, getPlaylists, getPlaylistSongs, removeSongFromPlaylist, updatePlaylist } from "../controllers/playlist.controller.js";
 
 import verifyToken from "../middleware/verifyToken.js";
 
 const router = new Router();
 
 router
+.get("/", verifyToken, getPlaylists)
 .get("/:id", verifyToken, getPlaylist)
 .get("/:id/songs", getPlaylistSongs)
 .post("/create", verifyToken, createPlaylist)

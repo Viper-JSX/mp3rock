@@ -33,7 +33,7 @@ const router = createBrowserRouter([
         
             {
                 path: "/playlists",
-                element: <PlaylistsPage show="APP_PLAYLISTS" />
+                element: <PlaylistsPage show="ALL_PLAYLISTS" />
             },
         
             {

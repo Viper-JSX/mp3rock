@@ -19,6 +19,26 @@ const getPlaylist = async (req, res) => {
 }
 
 
+const getPlaylists = async (req, res) => {
+    try {  
+        const { search } = req.query;
+        const query = {};
+
+        if(search) {
+            query.name = {$regex: search, $options: "i" };
+        }
+        
+        const playlists = await Playlist.find(query);
+        res.status(200).json({ playlists, message: "Playlists received successfully" });
+
+    } catch(err) {
+        console.log(err)
+        res.status(500).json({ error: "Internal server error when getting playlists" });
+    }
+}
+
+
+
 const getPlaylistSongs = async (req, res) => {
     try {  
         const playlistId = req.params?.id;
@@ -208,4 +228,4 @@ const deletePlaylist = async (req, res) => {
     }
 }
 
-export { getPlaylist, getPlaylistSongs, createPlaylist, updatePlaylist, addSongToPlaylist, removeSongFromPlaylist, deletePlaylist };
+export { getPlaylist, getPlaylists, getPlaylistSongs, createPlaylist, updatePlaylist, addSongToPlaylist, removeSongFromPlaylist, deletePlaylist };

@@ -1,2 +1,2 @@
-export type PlaylistViewOptions = "APP_PLAYLISTS" | "MY_PLAYLISTS";
+export type PlaylistViewOptions = "ALL_PLAYLISTS" | "MY_PLAYLISTS";
 

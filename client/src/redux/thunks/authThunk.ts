@@ -21,7 +21,6 @@ const signUp = createAsyncThunk<User, SignUpPayload>(
     async(data) => {
         //maybe wrap with try/catch
         const user = (await (axiosClient.post("/auth/sign-up", data))).data.user;
-        console.log("sign-up", user);
 
         return user;
 })
@@ -30,15 +29,10 @@ const signUp = createAsyncThunk<User, SignUpPayload>(
 const authorize = createAsyncThunk<User, undefined>(
     "/auth/authorize",
 
-    async (data) => {
+    async () => {
         //maybe wrap with try/catch
         const user: User = (await (axiosClient.post("/auth/authorize"))).data.user;
-        console.log("authorization", user);
         return user;
-        return { 
-            username: "",
-            email: ""
-        }
     }
 );
 

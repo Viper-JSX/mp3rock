@@ -14,8 +14,6 @@ function App() {
         dispatch(authorize());
     }, [])
 
-    useAppSelector((state) => console.log(state.user.user))
-
     const { user, isLoading, error } = useAppSelector((state) => state.user);
 
     const textToDisplay = user ? "Signed-in" : (isLoading ? "Loading" : (error ? "Error" : "Not singed-in")) 

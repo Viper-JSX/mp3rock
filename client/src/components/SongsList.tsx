@@ -6,12 +6,10 @@ interface IProps {
 };
 
 const SongsList: React.FC<IProps> = ({ songs }) => {
-    console.log(songs)
-
     return (
         <div className="songs-list">
             {
-                songs.map((song) => <SongItem song={song} />)
+                songs.map((song) => <SongItem song={song} key={song._id} />)
             }
         </div>
     );

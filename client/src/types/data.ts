@@ -1,4 +1,5 @@
 export interface IPlayList {
+    _id: string;
     name: string;
 };
 
@@ -7,3 +8,7 @@ export interface ISong {
     name: string;
 };
 
+export interface IJanre {
+    _id: string;
+    name: string;
+};
