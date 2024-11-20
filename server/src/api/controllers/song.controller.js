@@ -6,7 +6,7 @@ import extractCloudinaryFileId from "../../lib/utilities/extractCloudinaryFileId
 const getSong = async (req, res) => {
     try {
         const songId = req.params.id;
-        const song = await Song.findById(songId).select("-file"); //note this
+        const song = await Song.findById(songId);//.select("-file"); (if the file is a file not a link) //note this
 
         if(!song) {
             return res.status(404).json({ error: "Song not found" });

@@ -1,5 +1,6 @@
 import Playlist from "../models/playlist.model.js";
 import Song from "../models/song.model.js";
+import User from "../models/user.model.js";
 
 const getPlaylist = async (req, res) => {
     try {  
@@ -205,6 +206,35 @@ const removeSongFromPlaylist = async (req, res) => {
 }
 
 
+const addPlaylistToSaved = async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const { id } = req.params;
+
+        const playlist = await Playlist.findById(id);
+
+        console.log(playlist, id);
+        if(!playlist) {
+            return res.status(404).json({ error: "Playlist not found" });
+        }
+
+        const { savedPlaylists } = await User.findById(userId).select("savedPlaylists");
+        const isPlaylistAlreadyInSaved = savedPlaylists.includes(id);
+
+        if(isPlaylistAlreadyInSaved) {   
+            await User.updateOne({ _id: userId }, { $pull: { savedPlaylists: id } });
+            return res.status(200).json({ message: "Playlist removed from saved" });
+        }
+
+        await User.updateOne({ _id: userId }, { $push: { savedPlaylists: id } });
+        return res.status(200).json({ message: "Playlist added to saved" });
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({ error: "Internal server error when adding playlist to saved" });    
+    }
+}
+
+
 const deletePlaylist = async (req, res) => {
     try {
         const playlistId = req.params.id;
@@ -228,4 +258,4 @@ const deletePlaylist = async (req, res) => {
     }
 }
 
-export { getPlaylist, getPlaylists, getPlaylistSongs, createPlaylist, updatePlaylist, addSongToPlaylist, removeSongFromPlaylist, deletePlaylist };
+export { getPlaylist, getPlaylists, getPlaylistSongs, createPlaylist, updatePlaylist, addSongToPlaylist, removeSongFromPlaylist, addPlaylistToSaved, deletePlaylist };

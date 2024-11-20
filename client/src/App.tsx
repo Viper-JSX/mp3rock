@@ -10,19 +10,15 @@ function App() {
     const dispatch = useAppDispatch();
     
     useEffect(() => {
+        //dispatch(signIn({ email: "yuramcpecs@gmail.com", password: "yuramcpecs" }));
         //sign-in using token
         dispatch(authorize());
     }, [])
-
-    const { user, isLoading, error } = useAppSelector((state) => state.user);
-
-    const textToDisplay = user ? "Signed-in" : (isLoading ? "Loading" : (error ? "Error" : "Not singed-in")) 
 
     return (
         <div>
             <Header />
             <Outlet />
-            { textToDisplay }
         </div>
     )
 }

@@ -24,6 +24,12 @@ const UserSchema = new Schema({
     playlists: {
         type: [Schema.Types.ObjectId],
         ref: "playlists"
+    },
+
+    savedPlaylists: {
+        type: [Schema.Types.ObjectId],
+        ref: "playlists",
+        default: []
     }
 }, {
     timestamps: { createdAt: true }

@@ -7,3 +7,4 @@ export const homePageImages = [
     "https://www.sxsw.com/wp-content/uploads/2024/07/03-12_British-Music-Embassy_Downright_David-Brendan-Hall_22.jpg"
 ];
 
+export const defaultAvatarImage: string = "https://www.shutterstock.com/image-vector/dj-avatar-male-musician-character-600nw-1985403074.jpg";
