@@ -35,15 +35,20 @@ const router = createBrowserRouter([
                 path: "/playlists",
                 element: <PlaylistsPage show="ALL_PLAYLISTS" />
             },
-        
+
             {
                 path: "/playlists/:id",
                 element: <PlaylistPage />
             },
         
             {
+                path: "/playlists/:id/update",
+                element: <UpdatePlaylistPage />
+            },
+
+            {
                 path: "/my-playlists",
-                element: <PlaylistPage show="MY_PLAYLISTS" />
+                element: <PlaylistPage />
             },
         
             {

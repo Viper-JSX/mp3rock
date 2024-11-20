@@ -97,7 +97,7 @@ const updatePlaylist = async (req, res) => {
     try {
         const playlistId = req.params.id;
         const userId = req.user._id.toString();
-        const { name = newPlaylistName } = req.body;
+        const { name } = req.body;
 
         const playlist = await Playlist.findById(playlistId);
 
@@ -115,7 +115,7 @@ const updatePlaylist = async (req, res) => {
         }
 
         const updatedPlaylist = await Playlist.findByIdAndUpdate(playlistId, { name }, { returnDocument: "after" });
-
+        console.log("Updated")
         res.status(200).json({ playlist: updatedPlaylist, message: "Playlist updated successfully" });
 
     } catch(err) {

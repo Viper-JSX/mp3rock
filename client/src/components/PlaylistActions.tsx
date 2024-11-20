@@ -22,7 +22,7 @@ const PlaylistActions: React.FC<IProps> = ({ playlist, addPlaylistToSaved, delet
                 isUserCreatorOfThePlaylist ? 
                 <>
                     <button>
-                        <Link to={`/songs/${playlist._id}/update`}>Update</Link>
+                        <Link to={`/playlists/${playlist._id}/update`}>Update</Link>
                     </button>
                     <button onClick={() => deletePlaylist(playlist._id)}>Delete</button>
                 </>
